@@ -1,9 +1,27 @@
 ## Prepare the `tx_housing_markets` dataset
-## Source: ggplot2::txhousing, originally from the TAMU Real Estate Center
-## (https://trerc.tamu.edu/)
+## Sources:
+##   - Housing: ggplot2::txhousing, originally from the TAMU Real Estate
+##     Center (https://trerc.tamu.edu/)
+##   - Inflation: Consumer Price Index for All Urban Consumers: All Items in
+##     South (CUUR0300SA0), U.S. Bureau of Labor Statistics, retrieved from
+##     FRED (https://fred.stlouisfed.org/series/CUUR0300SA0). Texas is in the
+##     BLS South region; no monthly CPI is published for Texas alone
+
 
 library(tidyverse)
 
+# Read the inflation data. The file was downloaded manually as a CSV from
+# https://fred.stlouisfed.org/series/CUUR0300SA0 on 26 October 2026 and saved
+# here, so the script gives the same result even if FRED revises the figures
+cpi <- read_csv("data-raw/cuur0300sa0.csv", na = c("", "NA", ".")) |>
+  # FRED files have two columns: the date and the index value
+  rename(date = 1, cpi = 2) |>
+  filter(date >= as.Date("2000-01-01"), date <= as.Date("2015-07-01"))
+
+# Express all prices in July 2015 dollars (the last month in the housing data)
+base_cpi <- cpi$cpi[cpi$date == as.Date("2015-07-01")]
+
+# Prepare the housing data and add inflation-adjusted prices
 tx_housing_markets <- ggplot2::txhousing |>
   # These are MLS market areas, not always cities, so use a clearer name
   rename(area = city) |>
@@ -27,9 +45,13 @@ tx_housing_markets <- ggplot2::txhousing |>
                  "Recovery (2011-2015)")
     )
   ) |>
+  # Join each month's CPI value to the housing data
+  left_join(cpi, by = "date") |>
+  # Convert the median price to July 2015 dollars, removing inflation
+  mutate(median_real = round(median * base_cpi / cpi)) |>
   # Put the columns in a sensible order and sort by area, then date
   select(area, date, year, month, period,
-         sales, volume, median, listings, inventory) |>
+         sales, volume, median, median_real, listings, inventory) |>
   arrange(area, date)
 
 usethis::use_data(tx_housing_markets, overwrite = TRUE)
