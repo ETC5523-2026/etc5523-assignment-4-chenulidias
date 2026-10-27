@@ -22,4 +22,7 @@ Roxygen: list(markdown = TRUE)
 LazyData: true
 URL: https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/
 Imports: 
-    dplyr
+    bslib,
+    dplyr,
+    ggplot2,
+    shiny
