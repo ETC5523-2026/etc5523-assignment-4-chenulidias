@@ -5,12 +5,14 @@ Authors@R:
     person("Chenuli", "Muthukuda Arachchige",
            email = "cmut0005@student.monash.edu",
            role = c("aut", "cre"))
-Description: Provides a cleaned version of monthly Texas housing market data
-    from 2000 to 2015, functions to summarise how each market's sales and
-    prices changed during and after the 2008 financial crisis, and an
-    interactive Shiny app for comparing the resilience and recovery of
-    different Texas housing markets. Data originally from the TAMU Real
-    Estate Center, as distributed in the 'ggplot2' package.
+Description: Provides cleaned monthly housing market data for 46 Texas
+    market areas from 2000 to 2015, including median prices adjusted for
+    inflation, a function that summarises how far each market fell during
+    the 2008 financial crisis and how quickly it recovered, and an
+    interactive Shiny app for comparing the resilience of different
+    markets. Housing data originally from the TAMU Real Estate Center, as
+    distributed in the 'ggplot2' package; inflation data from the U.S.
+    Bureau of Labor Statistics, retrieved from FRED.
 License: MIT + file LICENSE
 Depends:
     R (>= 4.1.0)
@@ -19,3 +21,5 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 LazyData: true
 URL: https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/
+Imports: 
+    dplyr
