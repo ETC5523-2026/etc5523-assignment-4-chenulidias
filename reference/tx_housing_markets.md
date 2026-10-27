@@ -1,9 +1,10 @@
 # Monthly housing market data for Texas MLS areas, 2000-2015
 
-A cleaned version of `ggplot2::txhousing`, with one row per market area
-per month, plus inflation-adjusted median prices. Used to explore how
-Texas housing markets changed before, during and after the 2008
-financial crisis.
+A cleaned version of
+[`ggplot2::txhousing`](https://ggplot2.tidyverse.org/reference/txhousing.html),
+with one row per market area per month, plus inflation-adjusted median
+prices. Used to explore how Texas housing markets changed before, during
+and after the 2008 financial crisis.
 
 ## Usage
 
@@ -69,7 +70,8 @@ A tibble with 8,602 rows and 11 columns:
 
 Housing data: originally collected by the Texas A&M University (TAMU)
 Real Estate Center, <https://trerc.tamu.edu/>. This package uses the
-copy distributed in the ggplot2 package as `ggplot2::txhousing`.
+copy distributed in the ggplot2 package as
+[`ggplot2::txhousing`](https://ggplot2.tidyverse.org/reference/txhousing.html).
 
 Inflation data: U.S. Bureau of Labor Statistics, Consumer Price Index
 for All Urban Consumers: All Items in South (CUUR0300SA0), retrieved
