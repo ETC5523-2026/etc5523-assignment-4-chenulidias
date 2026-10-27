@@ -25,4 +25,5 @@ Imports:
     bslib,
     dplyr,
     ggplot2,
+    scales,
     shiny
