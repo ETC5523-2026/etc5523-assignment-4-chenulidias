@@ -134,3 +134,9 @@ for the full licence text.
 - [`tx_housing_markets`](https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/reference/tx_housing_markets.md)
   : Monthly housing market data for Texas MLS areas, 2000-2015
 
+# Articles
+
+### All vignettes
+
+- [Compare how Texas housing markets weathered the 2008
+  crisis](https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/articles/txhome.md):
