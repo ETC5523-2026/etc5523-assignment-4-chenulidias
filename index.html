@@ -48,22 +48,65 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of txhome is to …</p>
+<p><strong>txhome</strong> helps you explore how Texas housing markets weathered the 2008 financial crisis. It contains monthly housing data for 46 Texas market areas from 2000 to 2015, a function that measures how far each market fell during the crisis and how quickly it recovered, and an interactive Shiny app for comparing markets.</p>
+<p>Website: <a href="https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/" class="uri">https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/</a></p>
+<div class="section level2">
+<h2 id="who-its-for-and-the-question-it-answers">Who it’s for and the question it answers<a class="anchor" aria-label="anchor" href="#who-its-for-and-the-question-it-answers"></a>
+</h2>
+<p>The package is designed for <strong>economics students studying how the 2008 financial crisis affected regional housing markets</strong>. It helps answer:</p>
+<blockquote>
+<p>Which Texas housing markets were hit hardest by the 2007-2010 downturn, and how quickly did they recover?</p>
+</blockquote>
+<p>The 2007-2009 financial crisis was the worst US downturn since the Great Depression, and it is widely studied in economics because it began in the housing market. Texas is a well-known case: it escaped the worst of the crash, but its local markets were not affected equally (Kumar and Skelton, <a href="https://www.dallasfed.org/~/media/documents/research/swe/2013/swe1303a.pdf" class="external-link">Federal Reserve Bank of Dallas, 2013</a>).</p>
+<p>The package lets students compare how far different Texas markets fell and how quickly they recovered, and see why economists adjust prices for inflation: in this data, many markets only appear unaffected until inflation is removed. The data is ready to use, the app needs no coding and explains each measure in plain language, and <code><a href="reference/crisis_recovery.html">crisis_recovery()</a></code> gives the figures for any market in one line.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of txhome from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>Install the package from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ETC5523-2026/etc5523-assignment-4-chenulidias"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ETC5523-2026/etc5523-assignment-4-chenulidias"</span><span class="op">)</span></span></code></pre></div>
+<p>The package requires R 4.1 or later. Its dependencies (dplyr, shiny, bslib, ggplot2 and scales) are installed automatically.</p>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="launch-the-app">Launch the app<a class="anchor" aria-label="anchor" href="#launch-the-app"></a>
 </h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/">txhome</a></span><span class="op">)</span></span>
-<span><span class="co">## basic example code</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/run_app.html">run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>In the app, choose one or more market areas and a measure (homes sold, or the median sale price with or without an adjustment for inflation). Two headline boxes show which chosen area was hit hardest and which recovered fastest, and three tabs show the areas over time, a summary table, and a ranking of every area in Texas.</p>
+</div>
+<div class="section level2">
+<h2 id="use-the-summary-function">Use the summary function<a class="anchor" aria-label="anchor" href="#use-the-summary-function"></a>
+</h2>
+<p><code><a href="reference/crisis_recovery.html">crisis_recovery()</a></code> summarises each area’s pre-crisis peak, downturn low, percentage fall and recovery year:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/crisis_recovery.html">crisis_recovery</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"sales"</span>, areas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Austin"</span>, <span class="st">"Dallas"</span>, <span class="st">"Houston"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>For example, home sales in Austin, Dallas and Houston each fell by roughly 30-35% from 2006 to 2010. Austin was back at its pre-crisis level by 2013, while Dallas had still not recovered by mid-2015.</p>
+</div>
+<div class="section level2">
+<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h2>
+<p>The package includes one dataset, <code>tx_housing_markets</code>: monthly sales, prices, listings and inventory for 46 Texas market areas from January 2000 to July 2015.</p>
+<ul>
+<li>
+<strong>Housing data:</strong> collected by the Texas A&amp;M University (TAMU) Real Estate Center (<a href="https://trerc.tamu.edu/" class="external-link uri">https://trerc.tamu.edu/</a>), using the copy distributed in the ggplot2 package as <code><a href="https://ggplot2.tidyverse.org/reference/txhousing.html" class="external-link">ggplot2::txhousing</a></code>.</li>
+<li>
+<strong>Inflation data:</strong> the Consumer Price Index for the US South region (CUUR0300SA0) from the US Bureau of Labor Statistics, retrieved from FRED (<a href="https://fred.stlouisfed.org/series/CUUR0300SA0" class="external-link uri">https://fred.stlouisfed.org/series/CUUR0300SA0</a>). It is used to convert median prices into July 2015 dollars, so prices from different years can be compared fairly.</li>
+</ul>
+<p>The script <code>data-raw/tx_housing_markets.R</code> prepares the data: it renames <code>city</code> to <code>area</code> (since many are counties or regions), converts decimal years into proper monthly dates, labels each month as pre-crisis (2000-2006), downturn (2007-2010) or recovery (2011-2015), and joins the inflation data to calculate inflation-adjusted median prices. To recreate the dataset, run <code>source("data-raw/tx_housing_markets.R")</code> from the package’s source folder. See <code><a href="reference/tx_housing_markets.html">?tx_housing_markets</a></code> for a description of every column.</p>
+<p><strong>Limitations:</strong> the data end in July 2015, so later recoveries are not captured; market areas are MLS (multiple listing service) regions rather than exact city boundaries; and two areas (Kerrville and South Padre Island) have no data before 2007, so their fall and recovery cannot be measured.</p>
+</div>
+<div class="section level2">
+<h2 id="generative-ai-declaration">Generative AI declaration<a class="anchor" aria-label="anchor" href="#generative-ai-declaration"></a>
+</h2>
+<p>Generative AI declaration: I used Claude (Anthropic) to help plan the package, debug R code and concepts for the data preparation script, the <code><a href="reference/crisis_recovery.html">crisis_recovery()</a></code> function and the Shiny app, refine the wording of the documentation and app text, and troubleshoot Git, GitHub and pkgdown setup. I checked, tested and revised all generated code and text, and I understand and take responsibility for the final work.</p>
+</div>
+<div class="section level2">
+<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
+<p>MIT. See <a href="LICENSE.html">LICENSE.md</a> for the full licence text.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
