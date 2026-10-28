@@ -144,6 +144,9 @@ ui <- page_sidebar(
       "Summary table",
       h5(textOutput("table_title")),
       tableOutput("recovery_table"),
+      downloadButton("download_table", "Download this table (CSV)"),
+      helpText("Saves the figures for your chosen areas and measure, for",
+               "use in your own work."),
       source_note,
       p(class = "text-muted", strong("How to read this table:")),
       tags$ul(
@@ -188,7 +191,8 @@ server <- function(input, output, session) {
   }, label = "selected_data")
 
   # Shared reactive 2: the crisis summary for the chosen areas, from the
-  # package's crisis_recovery() function. The boxes and table both use it
+  # package's crisis_recovery() function. The boxes, table and download
+  # all use it
   selected_recovery <- reactive({
     crisis_recovery(selected_data(), measure = input$measure)
   }, label = "selected_recovery")
@@ -390,7 +394,16 @@ server <- function(input, output, session) {
             legend.position = "top",
             axis.text.y = element_text(size = 12))
   })
+
+  # Download the summary table for the chosen areas and measure
+  output$download_table <- downloadHandler(
+    filename = function() {
+      paste0("texas-housing-recovery-", input$measure, ".csv")
+    },
+    content = function(file) {
+      write.csv(selected_recovery(), file, row.names = FALSE)
+    }
+  )
 }
 
 shinyApp(ui, server)
-

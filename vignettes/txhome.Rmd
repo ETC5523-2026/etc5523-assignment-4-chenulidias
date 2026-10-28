@@ -59,7 +59,8 @@ The app then shows:
 - **Over time:** each chosen area from 2000 to 2015, with the 2007-2010
   downturn shaded.
 - **Summary table:** each area's pre-crisis peak, downturn low, percentage
-  fall, and the year it got back to its peak.
+  fall, and the year it got back to its peak. The table can be downloaded
+  as a CSV file for use in your own work.
 - **All areas ranked:** how far every Texas market fell, with your chosen
   areas highlighted.
 
