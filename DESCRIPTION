@@ -27,3 +27,7 @@ Imports:
     ggplot2,
     scales,
     shiny
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
