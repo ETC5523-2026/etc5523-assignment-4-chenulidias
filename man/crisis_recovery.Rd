@@ -47,10 +47,12 @@ full years. Because 2015 only covers the first seven months, its average
 may differ slightly from a full-year figure due to seasonal patterns.
 }
 \examples{
-crisis_recovery(measure = "sales", areas = c("Austin", "Dallas", "Houston"))
+crisis_recovery(measure = "sales", areas = c("Austin", "Dallas", "Houston")) |>
+  dplyr::select(area, drop_pct, recovery_year, status)
 # How far home sales fell in three large markets, and whether they recovered
 
 crisis_recovery(measure = "median_real") |>
-  dplyr::slice_min(drop_pct, n = 5)
+  dplyr::slice_min(drop_pct, n = 5) |>
+  dplyr::select(area, peak_year, low_year, drop_pct, status)
 # The five areas with the biggest fall in inflation-adjusted prices
 }

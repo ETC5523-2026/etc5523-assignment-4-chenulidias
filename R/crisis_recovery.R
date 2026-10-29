@@ -36,11 +36,13 @@
 #'   select slice_max slice_min summarise tibble ungroup
 #' @export
 #' @examples
-#' crisis_recovery(measure = "sales", areas = c("Austin", "Dallas", "Houston"))
+#' crisis_recovery(measure = "sales", areas = c("Austin", "Dallas", "Houston")) |>
+#'   dplyr::select(area, drop_pct, recovery_year, status)
 #' # How far home sales fell in three large markets, and whether they recovered
 #'
 #' crisis_recovery(measure = "median_real") |>
-#'   dplyr::slice_min(drop_pct, n = 5)
+#'   dplyr::slice_min(drop_pct, n = 5) |>
+#'   dplyr::select(area, peak_year, low_year, drop_pct, status)
 #' # The five areas with the biggest fall in inflation-adjusted prices
 crisis_recovery <- function(data = tx_housing_markets,
                             measure = "sales",
