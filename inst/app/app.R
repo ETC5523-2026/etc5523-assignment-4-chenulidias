@@ -92,13 +92,16 @@ ui <- page_sidebar(
     )
   ),
 
-  # Who the app is for, the question, and how to use it
+  # Who the app is for, the question, why it matters, and how to use it
   card(
     card_header("About this app"),
     p(strong("For: "), "economics students studying how the 2008 financial",
       "crisis affected regional housing markets."),
     p(strong("Question: "), "Which Texas housing markets were hit hardest by",
       "the 2007-2010 downturn, and how quickly did they recover?"),
+    p("Texas is often said to have escaped the worst of the US housing",
+      "crash, but its local markets were not affected equally. This app",
+      "lets you see how differently they fared."),
     p("A market area is a local housing market, usually a city or county.",
       "Choose areas and a measure on the left. The two boxes below answer",
       "the question for your chosen areas, and the tabs show the details.")
