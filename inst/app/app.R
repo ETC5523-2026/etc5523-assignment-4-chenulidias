@@ -109,7 +109,19 @@ ui <- page_sidebar(
       "lets you see how differently they fared."),
     p("A market area is a local housing market, usually a city or county.",
       "Choose areas and a measure on the left. The two boxes below answer",
-      "the question for your chosen areas, and the tabs show the details.")
+      "the question for your chosen areas, and each tab helps in a",
+      "different way:"),
+    # What each tab is for
+    tags$ul(
+      tags$li(strong("Over time:"), "see when each area fell and how",
+              "quickly it climbed back, year by year."),
+      tags$li(strong("Summary table:"), "get the exact figures for each",
+              "area, to compare closely or download for your own work."),
+      tags$li(strong("All areas ranked:"), "see which markets fell furthest",
+              "across all of Texas, and how your chosen areas compare with",
+              "the rest. Not sure which areas to explore? Start here, then",
+              "choose the ones that stand out.")
+    )
   ),
 
   # Headline boxes answering the two parts of the question
