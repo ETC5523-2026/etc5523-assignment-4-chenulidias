@@ -4,7 +4,7 @@ library(dplyr)
 library(ggplot2)
 library(txhome)
 
-# The measures users can choose
+# The three measures users can choose (label shown = data column)
 measure_choices <- c(
   "Homes sold" = "sales",
   "Median price, adjusted for inflation" = "median_real",
@@ -44,10 +44,15 @@ source_note <- p(
   "adjustment uses the US Bureau of Labor Statistics South region CPI."
 )
 
+# User interface
+
 ui <- page_sidebar(
   title = "Texas housing markets and the 2008 crisis",
   theme = bs_theme(bootswatch = "flatly"),
   fillable = FALSE,
+
+  # Sidebar: the three inputs, read in the server as input$areas,
+  # input$measure and input$relative
   sidebar = sidebar(
     width = 320,
     selectInput(
@@ -92,7 +97,7 @@ ui <- page_sidebar(
     )
   ),
 
-  # Who the app is for, the question, why it matters, and how to use it
+  # Who the app is for, the question it answers, and how to use it
   card(
     card_header("About this app"),
     p(strong("For: "), "economics students studying how the 2008 financial",
@@ -107,7 +112,7 @@ ui <- page_sidebar(
       "the question for your chosen areas, and the tabs show the details.")
   ),
 
-  # Headline answers to the two parts of the question
+  # Headline boxes answering the two parts of the question
   layout_columns(
     fill = FALSE,
     value_box(
@@ -124,7 +129,7 @@ ui <- page_sidebar(
     )
   ),
 
-  # Three views of the same selection
+  # Three tabs showing the same selection in different ways
   navset_card_tab(
     nav_panel(
       "Over time",
@@ -137,7 +142,7 @@ ui <- page_sidebar(
         "market recovered. With option 3 ticked, the dashed line at 100 is",
         "each area's pre-crisis peak: below it means lower than before the",
         "crisis, above it means higher."),
-      # Only shown for prices, where inflation matters
+      # Only shown for price measures, where inflation matters
       conditionalPanel(
         condition = "input.measure != 'sales'",
         div(class = "alert alert-info", textOutput("inflation_note"))
@@ -181,9 +186,12 @@ ui <- page_sidebar(
   )
 )
 
+# Server
+
 server <- function(input, output, session) {
 
-  # Shared reactive 1: the monthly data for the chosen areas
+  # Shared reactive 1: the monthly data for the chosen areas.
+  # If no areas are chosen, validate() shows a message instead of an error
   selected_data <- reactive({
     validate(
       need(length(input$areas) > 0,
@@ -193,25 +201,26 @@ server <- function(input, output, session) {
       filter(area %in% input$areas)
   }, label = "selected_data")
 
-  # Shared reactive 2: the crisis summary for the chosen areas, from the
-  # package's crisis_recovery() function. The boxes, table and download
-  # all use it
+  # Shared reactive 2: each chosen area's fall and recovery, from the
+  # package's crisis_recovery() function. Used by the boxes, table and
+  # download, so they always agree
   selected_recovery <- reactive({
     crisis_recovery(selected_data(), measure = input$measure)
   }, label = "selected_recovery")
 
-  # The crisis summary for every area, used by the ranking chart
+  # Every area's fall and recovery, for the ranking chart
   all_recovery <- reactive({
     crisis_recovery(measure = input$measure)
   }, label = "all_recovery")
 
-  # Headline 1: the chosen area with the biggest fall
+  # Hardest hit box: the chosen area with the biggest fall
   hardest <- reactive({
     selected_recovery() |>
       filter(drop_pct < 0) |>
       slice_min(drop_pct, n = 1, with_ties = FALSE)
   }, label = "hardest")
 
+  # Each output$... fills the matching output in the user interface
   output$hardest_name <- renderText({
     if (nrow(hardest()) == 0) return("None")
     hardest()$area
@@ -225,7 +234,8 @@ server <- function(input, output, session) {
     paste0("Fell ", abs(hardest()$drop_pct), "% from its pre-crisis peak")
   })
 
-  # Headline 2: the chosen area that recovered fastest
+  # Fastest recovery box: the recovered area that got back to its peak
+  # in the fewest years
   fastest <- reactive({
     selected_recovery() |>
       filter(status == "Recovered") |>
@@ -247,9 +257,9 @@ server <- function(input, output, session) {
            years, " ", unit, " after its low")
   })
 
-  # Over-time chart: each chosen area's yearly level, downturn shaded.
-  # Optionally rescaled so each area's pre-crisis peak equals 100
+  # Over-time chart
   output$trend_plot <- renderPlot({
+    # Average each area's monthly values into yearly levels
     yearly <- selected_data()
     yearly$value <- yearly[[input$measure]]
     yearly <- yearly |>
@@ -260,8 +270,8 @@ server <- function(input, output, session) {
     y_label <- measure_axis[[input$measure]]
     y_scale <- scale_y_continuous(labels = axis_labels(input$measure))
 
+    # Option 3: rescale each area so its pre-crisis peak equals 100
     if (input$relative) {
-      # Divide each area's values by its pre-crisis peak
       peaks <- yearly |>
         filter(year <= 2006) |>
         group_by(area) |>
@@ -278,6 +288,7 @@ server <- function(input, output, session) {
       y_scale <- scale_y_continuous()
     }
 
+    # One line per area, with the downturn shaded grey
     plot <- ggplot(yearly, aes(x = year, y = value, colour = area)) +
       annotate("rect", xmin = 2006.5, xmax = 2010.5,
                ymin = -Inf, ymax = Inf, fill = "grey85", alpha = 0.5) +
@@ -300,7 +311,7 @@ server <- function(input, output, session) {
             panel.grid.minor = element_blank(),
             legend.position = "bottom")
 
-    # With option 3 ticked, a dashed line marks the pre-crisis peak
+    # Dashed line at 100 marks the pre-crisis peak
     if (input$relative) {
       plot <- plot + geom_hline(yintercept = 100, linetype = "dashed",
                                 colour = "grey40")
@@ -308,7 +319,8 @@ server <- function(input, output, session) {
     plot
   })
 
-  # Inflation note: how adjusting for inflation changes the answer
+  # Inflation note: compares results with and without the inflation
+  # adjustment
   output$inflation_note <- renderText({
     nominal <- crisis_recovery(selected_data(), measure = "median") |>
       filter(status != "Insufficient data")
@@ -327,13 +339,12 @@ server <- function(input, output, session) {
     )
   })
 
-  # Summary table title, naming the chosen measure
+  # Summary table title and table
   output$table_title <- renderText({
     paste("How far", measure_short[[input$measure]],
           "fell and when they recovered")
   })
 
-  # Summary table: numbers right-aligned, units in the column headings
   output$recovery_table <- renderTable({
     unit <- measure_unit[[input$measure]]
     table <- selected_recovery() |>
@@ -353,7 +364,7 @@ server <- function(input, output, session) {
     table
   }, align = "lrrrrrrl", digits = 1, na = "-")
 
-  # Ranking chart: every area's fall, hardest hit at the top
+  # Ranking chart: every area's fall, with chosen areas in orange
   output$ranking_plot <- renderPlot({
     rec <- all_recovery()
     excluded <- rec$area[rec$status == "Insufficient data"]
@@ -398,7 +409,7 @@ server <- function(input, output, session) {
             axis.text.y = element_text(size = 12))
   })
 
-  # Download the summary table for the chosen areas and measure
+  # Download the summary table as a CSV file
   output$download_table <- downloadHandler(
     filename = function() {
       paste0("texas-housing-recovery-", input$measure, ".csv")
