@@ -81,26 +81,26 @@ may differ slightly from a full-year figure due to seasonal patterns.
 ## Examples
 
 ``` r
-crisis_recovery(measure = "sales", areas = c("Austin", "Dallas", "Houston"))
-#> # A tibble: 3 × 10
-#>   area    measure peak_year  peak low_year   low drop_pct recovery_year
-#>   <chr>   <chr>       <int> <dbl>    <int> <dbl>    <dbl>         <int>
-#> 1 Austin  sales        2006 2524.     2010 1656     -34.4          2013
-#> 2 Dallas  sales        2006 5352.     2010 3532.    -34              NA
-#> 3 Houston sales        2006 6750.     2010 4734.    -29.9          2014
-#> # ℹ 2 more variables: years_to_recover <int>, status <chr>
+crisis_recovery(measure = "sales", areas = c("Austin", "Dallas", "Houston")) |>
+  dplyr::select(area, drop_pct, recovery_year, status)
+#> # A tibble: 3 × 4
+#>   area    drop_pct recovery_year status               
+#>   <chr>      <dbl>         <int> <chr>                
+#> 1 Austin     -34.4          2013 Recovered            
+#> 2 Dallas     -34              NA Not recovered by 2015
+#> 3 Houston    -29.9          2014 Recovered            
 # How far home sales fell in three large markets, and whether they recovered
 
 crisis_recovery(measure = "median_real") |>
-  dplyr::slice_min(drop_pct, n = 5)
-#> # A tibble: 5 × 10
-#>   area        measure    peak_year   peak low_year    low drop_pct recovery_year
-#>   <chr>       <chr>          <int>  <dbl>    <int>  <dbl>    <dbl>         <int>
-#> 1 Galveston   median_re…      2006 2.05e5     2009 1.39e5    -32.3            NA
-#> 2 Garland     median_re…      2002 1.45e5     2010 1.05e5    -27.8            NA
-#> 3 Brownsville median_re…      2005 1.29e5     2009 1.02e5    -20.6            NA
-#> 4 Laredo      median_re…      2004 1.59e5     2010 1.28e5    -19.8            NA
-#> 5 Harlingen   median_re…      2000 1.14e5     2010 9.18e4    -19.7            NA
-#> # ℹ 2 more variables: years_to_recover <int>, status <chr>
+  dplyr::slice_min(drop_pct, n = 5) |>
+  dplyr::select(area, peak_year, low_year, drop_pct, status)
+#> # A tibble: 5 × 5
+#>   area        peak_year low_year drop_pct status               
+#>   <chr>           <int>    <int>    <dbl> <chr>                
+#> 1 Galveston        2006     2009    -32.3 Not recovered by 2015
+#> 2 Garland          2002     2010    -27.8 Not recovered by 2015
+#> 3 Brownsville      2005     2009    -20.6 Not recovered by 2015
+#> 4 Laredo           2004     2010    -19.8 Not recovered by 2015
+#> 5 Harlingen        2000     2010    -19.7 Not recovered by 2015
 # The five areas with the biggest fall in inflation-adjusted prices
 ```
