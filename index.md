@@ -108,11 +108,12 @@ measured.
 
 ## Generative AI declaration
 
-I used Claude (Anthropic) to help plan the package’s structure; explain,
-write and debug R code and concepts for the data preparation script, the
+Generative AI declaration: I used Claude (Anthropic) to help plan the
+package’s structure; explain, write and debug R code and concepts for
+the data preparation script, the
 [`crisis_recovery()`](https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/reference/crisis_recovery.md)
 function and the Shiny app; design the app’s figures, layout and
-styling; Refine and draft the wording of the README, vignette,
+styling; refine and draft the wording of the README, vignette,
 documentation and app text; and troubleshoot the pkgdown setup. I
 checked, tested and revised all generated code and text, and I
 understand and take responsibility for the final work.
