@@ -35,7 +35,9 @@ The sidebar has three controls:
     county.
 2.  **Choose a measure:** homes sold (the average number sold each
     month), the median sale price adjusted for inflation (in July 2015
-    dollars), or the median sale price as reported at the time.
+    dollars), or the median sale price as reported at the time. Homes
+    sold shows how much activity fell, while prices show how home values
+    changed.
 3.  **Compare areas as a percentage of their pre-crisis peak:** rescales
     every area so its highest yearly level from 2000 to 2006 equals 100.
     This lets you compare large and small markets on the same chart.
@@ -133,10 +135,11 @@ home’s price can look steady while its real value is falling.
 ## Limitations
 
 - The data end in July 2015, so recoveries after that are not captured.
-- Market areas are MLS (multiple listing service) regions, not exact
-  city boundaries.
-- Median prices depend on which homes sell, so they can change even if
-  individual home values do not.
+- Market areas are regions used by real estate listing services, so they
+  don’t always match official city boundaries.
+- Median prices depend on which homes sell. For example, if fewer
+  expensive homes sell during a crisis, the median price falls even if
+  no individual home loses value.
 - The inflation adjustment uses the CPI for the US South region, which
   includes Texas but is not specific to it.
 
