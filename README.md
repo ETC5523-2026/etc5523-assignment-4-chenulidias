@@ -4,6 +4,8 @@
 
 <!-- badges: end -->
 
+**Prepared by:** Chenuli Duasha Dias Muthukuda Arachchige
+
 **txhome** helps you explore how Texas housing markets weathered the 2008 financial crisis. It contains monthly housing data for 46 Texas market areas from 2000 to 2015, a function that measures how far each market fell during the crisis and how quickly it recovered, and an interactive Shiny app for comparing markets.
 
 Website: <https://etc5523-2026.github.io/etc5523-assignment-4-chenulidias/>
